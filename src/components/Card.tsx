@@ -18,9 +18,9 @@ const Card = () => {
               x1="16.5"
               id="b"
             >
-              <stop stop-color="#fbbf24" offset="0"></stop>
-              <stop stop-color="#fbbf24" offset=".45"></stop>
-              <stop stop-color="#f59e0b" offset="1"></stop>
+              <stop stopColor="#fbbf24" offset="0"></stop>
+              <stop stopColor="#fbbf24" offset=".45"></stop>
+              <stop stopColor="#f59e0b" offset="1"></stop>
             </linearGradient>
             <linearGradient
               gradientUnits="userSpaceOnUse"
@@ -30,9 +30,9 @@ const Card = () => {
               x1="22.56"
               id="c"
             >
-              <stop stop-color="#f3f7fe" offset="0"></stop>
-              <stop stop-color="#f3f7fe" offset=".45"></stop>
-              <stop stop-color="#deeafb" offset="1"></stop>
+              <stop stopColor="#f3f7fe" offset="0"></stop>
+              <stop stopColor="#f3f7fe" offset=".45"></stop>
+              <stop stopColor="#deeafb" offset="1"></stop>
             </linearGradient>
             <linearGradient
               gradientUnits="userSpaceOnUse"
@@ -42,9 +42,9 @@ const Card = () => {
               x1="22.53"
               id="a"
             >
-              <stop stop-color="#4286ee" offset="0"></stop>
-              <stop stop-color="#4286ee" offset=".45"></stop>
-              <stop stop-color="#0950bc" offset="1"></stop>
+              <stop stopColor="#4286ee" offset="0"></stop>
+              <stop stopColor="#4286ee" offset=".45"></stop>
+              <stop stopColor="#0950bc" offset="1"></stop>
             </linearGradient>
             <linearGradient
               xmlnsXlink="#a"
@@ -64,8 +64,8 @@ const Card = () => {
             ></linearGradient>
           </defs>
           <circle
-            stroke-width=".5"
-            stroke-miterlimit="10"
+            strokeWidth=".5"
+            strokeMiterlimit="10"
             stroke="#f8af18"
             fill="url(#b)"
             r="5"
@@ -74,9 +74,9 @@ const Card = () => {
           ></circle>
           <path
             d="M19 15.67V12.5m0 23v-3.17m5.89-14.22l2.24-2.24M10.87 32.13l2.24-2.24m0-11.78l-2.24-2.24m16.26 16.26l-2.24-2.24M7.5 24h3.17m19.83 0h-3.17"
-            stroke-width="2"
-            stroke-miterlimit="10"
-            stroke-linecap="round"
+            strokeWidth="2"
+            strokeMiterlimit="10"
+            strokeLinecap="round"
             stroke="#fbbf24"
             fill="none"
           >
@@ -90,16 +90,16 @@ const Card = () => {
           </path>
           <path
             d="M46.5 31.5h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0h28a7 7 0 000-14z"
-            stroke-width=".5"
-            stroke-miterlimit="10"
+            strokeWidth=".5"
+            strokeMiterlimit="10"
             stroke="#e6effc"
             fill="url(#c)"
           ></path>
           <path
             d="M24.39 43.03l-.78 4.94"
-            stroke-width="2"
-            stroke-miterlimit="10"
-            stroke-linecap="round"
+            strokeWidth="2"
+            strokeMiterlimit="10"
+            strokeLinecap="round"
             stroke="url(#a)"
             fill="none"
           >
@@ -113,9 +113,9 @@ const Card = () => {
           </path>
           <path
             d="M31.39 43.03l-.78 4.94"
-            stroke-width="2"
-            stroke-miterlimit="10"
-            stroke-linecap="round"
+            strokeWidth="2"
+            strokeMiterlimit="10"
+            strokeLinecap="round"
             stroke="url(#d)"
             fill="none"
           >
@@ -130,9 +130,9 @@ const Card = () => {
           </path>
           <path
             d="M38.39 43.03l-.78 4.94"
-            stroke-width="2"
-            stroke-miterlimit="10"
-            stroke-linecap="round"
+            strokeWidth="2"
+            strokeMiterlimit="10"
+            strokeLinecap="round"
             stroke="url(#e)"
             fill="none"
           >

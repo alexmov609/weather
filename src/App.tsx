@@ -1,4 +1,12 @@
+import { useEffect } from "react";
+import Card from "./components/Card";
+// import { getDefaultData } from "./services/openWeatherMap";
+
 function App() {
+  useEffect(() => {
+    // getDefaultData();
+  }, []);
+
   return (
     <div className="min-h-screen  bg-[url(./assets/images/main.png)] bg-cover bg-no-repeat bg-center">
       <div className=" w-full">
@@ -20,10 +28,13 @@ function App() {
             </button>
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full mx-4">
-          <h1 className="text-1xl font-bold text-red-600 text-center mb-4">
-            Weather App
-          </h1>
+        <div className="flex flex-row items-center justify-center mt-[35px]">
+          {/* <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm mx-4">
+            <h1 className="text-1xl font-bold text-red-600 text-center mb-4">
+              Weather App
+            </h1>
+          </div> */}
+          <Card />
         </div>
       </div>
     </div>

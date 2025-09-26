@@ -3,18 +3,86 @@ import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_WEATHER_API_BASE_URL
 
 
+interface City {
+    name: string;
+    latitude: number;
+    longitude: number;
+}
+
+interface WeatherUnits {
+    time: string;
+    interval: string;
+    temperature_2m: string;
+    relative_humidity_2m: string;
+    apparent_temperature: string;
+    is_day: string;
+    precipitation: string;
+    weather_code: string;
+    cloud_cover: string;
+    pressure_msl: string;
+    wind_speed_10m: string;
+    wind_direction_10m: string;
+}
+
+interface CurrentWeather {
+    time: string;
+    interval: number;
+    temperature_2m: number;
+    relative_humidity_2m: number;
+    apparent_temperature: number;
+    is_day: number;
+    precipitation: number;
+    weather_code: number;
+    cloud_cover: number;
+    pressure_msl: number;
+    wind_speed_10m: number;
+    wind_direction_10m: number;
+}
+
+interface WeatherResponse {
+    latitude: number;
+    longitude: number;
+    generationtime_ms: number;
+    utc_offset_seconds: number;
+    timezone: string;
+    timezone_abbreviation: string;
+    elevation: number;
+    location_id?: number;
+    current_units: WeatherUnits;
+    current: CurrentWeather;
+}
+
+interface FormattedWeatherData {
+    temperature: number | null;
+    feelsLike: number | null;
+    humidity: number | null;
+    precipitation: number | null;
+    windSpeed: number | null;
+    windDirection: number | null;
+    pressure: number | null;
+    cloudCover: number | null;
+    isDay: boolean;
+    weatherCode: number | null;
+    timestamp: string | null;
+}
+
+interface CityWeatherData extends FormattedWeatherData {
+    city: string;
+}
+
 /**
  * Fetch current weather data from open-meteo API 
  * https://open-meteo.com/en/docs
  */
-export const getDefaultData = async () => {
-    const lon = '52.520007'
-    const lat = '13.404954'
-
+export const getMultipleCitiesData = async (cities: City[]) => {
     try {
+        //create strings for all Longtitude and latitude from App.tsx
+        const lats = cities.map(city => city.latitude).join(',');
+        const lons = cities.map(city => city.longitude).join(',');
+
         const params = {
-            latitude: lat,
-            longitude: lon,
+            latitude: lats,
+            longitude: lons,
             current: [
                 'temperature_2m',
                 'relative_humidity_2m',
@@ -29,20 +97,48 @@ export const getDefaultData = async () => {
             ].join(','),
             timezone: 'auto'
         };
-        const response = await axios.get(API_BASE_URL, { params });
+        const response = await axios.get<WeatherResponse[]>(API_BASE_URL, { params });
+
+        if (!response.data || !Array.isArray(response.data)) {
+            throw new Error('Invalid API response structure');
+        }
+
+        // Map each city with its corresponding weather data
+        const newCities: CityWeatherData[] = cities.map((city, index) => ({
+            city: city.name,
+            ...formatWeatherData(response.data[index]) // Pass the specific weather object
+        }));
 
         return {
             success: true,
-            data: formatWeatherData(response.data)
+            data: newCities
         };
 
     } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred when fetach data';
+        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred when fetching data';
         return {
             success: false,
             error: errorMessage
         };
     }
+}
+
+/**
+ * Get searched city data
+ * @param city 
+ * @returns 
+ */
+export const getNewCityData = async (city: Array<City>) => {
+    const result = await getMultipleCitiesData(city);
+
+    if (result.success) {
+        return {
+            success: true,
+            data: result.data
+        };
+    }
+
+    return result;
 }
 
 
@@ -51,33 +147,29 @@ export const getDefaultData = async () => {
  * @param data 
  * @returns 
  */
-const formatWeatherData = (data: {
-    current: {
-        temperature_2m: string,
-        apparent_temperature: string,
-        relative_humidity_2m: string,
-        precipitation: string,
-        wind_speed_10m: string,
-        wind_direction_10m: string,
-        pressure_msl: string,
-        cloud_cover: string,
-        is_day: number,
-        weather_code: number
-        time: string
+const formatWeatherData = (weatherData: WeatherResponse, index = 0): FormattedWeatherData => {
+
+    if (!weatherData) {
+        throw new Error('Invalid data structure in formatWeatherData');
     }
-}) => {
-    const current = data.current;
+
+    const current = weatherData.current;
+    const getValue = (value: string | number | null) => {
+        if (value === undefined || value === null) return null;
+        return Array.isArray(value) ? value[index] : value;
+    };
+
     return {
-        temperature: current.temperature_2m,
-        feelsLike: current.apparent_temperature,
-        humidity: current.relative_humidity_2m,
-        precipitation: current.precipitation,
-        windSpeed: current.wind_speed_10m,
-        windDirection: current.wind_direction_10m,
-        pressure: current.pressure_msl,
-        cloudCover: current.cloud_cover,
-        isDay: current.is_day === 1,
-        weatherCode: current.weather_code,
-        timestamp: current.time
+        temperature: getValue(current.temperature_2m),
+        feelsLike: getValue(current.apparent_temperature),
+        humidity: getValue(current.relative_humidity_2m),
+        precipitation: getValue(current.precipitation),
+        windSpeed: getValue(current.wind_speed_10m),
+        windDirection: getValue(current.wind_direction_10m),
+        pressure: getValue(current.pressure_msl),
+        cloudCover: getValue(current.cloud_cover),
+        isDay: getValue(current.is_day) === 1,
+        weatherCode: getValue(current.weather_code),
+        timestamp: getValue(current.time)
     }
 };

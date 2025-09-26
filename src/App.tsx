@@ -1,10 +1,52 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Card from "./components/Card";
-// import { getDefaultData } from "./services/openWeatherMap";
+import { getMultipleCitiesData } from "./services/openWeatherMap";
+
+interface City {
+  name: string;
+  latitude: number;
+  longitude: number;
+}
+const myCities: Array<City> = [
+  { name: "Paris", latitude: 48.8566, longitude: 2.3522 },
+  { name: "London", latitude: 51.5074, longitude: -0.1278 },
+  // { name: "Budapest", latitude: 47.4979, longitude: 19.0402 },
+  // { name: "Moscow", latitude: 55.7558, longitude: 37.6176 },
+  // { name: "Oslo", latitude: 59.9139, longitude: 10.7522 },
+  // { name: "Copenhagen", latitude: 55.6761, longitude: 12.5683 },
+  // { name: "Vienna", latitude: 48.2082, longitude: 16.3738 },
+  // { name: "Barcelona", latitude: 41.3851, longitude: 2.1734 },
+  // { name: "Rome", latitude: 41.9028, longitude: 12.4964 },
+];
+
+interface DefaultCity {
+  city: string;
+  temperature: number | null;
+  feelsLike: number | null;
+  humidity: number | null;
+  precipitation: number | null;
+  windSpeed: number | null;
+  windDirection: number | null;
+  pressure: number | null;
+  cloudCover: number | null;
+  isDay: boolean;
+  weatherCode: number | null;
+  timestamp: string | null;
+}
 
 function App() {
+  const [defaultCities, setDefaultCities] = useState<Array<DefaultCity>>([]);
+
   useEffect(() => {
-    // getDefaultData();
+    const fetchDefaultCities = async () => {
+      const result = await getMultipleCitiesData(myCities);
+      console.log("daadada:", result.data);
+
+      if (result.success) {
+        setDefaultCities(result.data!);
+      }
+    };
+    fetchDefaultCities();
   }, []);
 
   return (

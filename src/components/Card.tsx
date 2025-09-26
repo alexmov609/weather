@@ -1,7 +1,22 @@
-const Card = () => {
+interface CityData {
+  city: string;
+  temperature: number | null;
+  feelsLike: number | null;
+  humidity: number | null;
+  precipitation: number | null;
+  windSpeed: number | null;
+  windDirection: number | null;
+  pressure: number | null;
+  cloudCover: number | null;
+  isDay: boolean;
+  weatherCode: number | null;
+  timestamp: string | null;
+}
+
+const Card = ({ data }: { data: CityData }) => {
   return (
     <div className="duration-300 font-mono text-white group cursor-pointer relative overflow-hidden bg-[#DCDFE4] w-28 h-48 dark:bg-[#22272B] rounded-3xl p-4 hover:w-56 hover:bg-blue-200 hover:dark:bg-[#0C66E4]">
-      <h3 className="text-xl text-center">London</h3>
+      <h3 className="text-xl text-center">{data.city}</h3>
       <div className="gap-4 relative">
         <svg
           viewBox="0 0 64 64"

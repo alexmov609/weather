@@ -76,7 +76,9 @@ function App() {
               Weather App
             </h1>
           </div> */}
-          <Card />
+          {defaultCities.map((cityData, ind) => (
+            <Card key={ind} data={cityData} />
+          ))}
         </div>
       </div>
     </div>

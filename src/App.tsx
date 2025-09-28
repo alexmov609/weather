@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Card from "./components/Card";
 import { getMultipleCitiesData } from "./services/openWeatherMap";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 interface City {
   name: string;
@@ -34,9 +35,14 @@ interface DefaultCity {
   timestamp: string | null;
 }
 
+type Inputs = {
+  cityToSearch: string;
+};
+
 function App() {
   const [defaultCities, setDefaultCities] = useState<Array<DefaultCity>>([]);
 
+  //fetch all default cities data
   useEffect(() => {
     const fetchDefaultCities = async () => {
       const result = await getMultipleCitiesData(myCities);
@@ -48,25 +54,35 @@ function App() {
     fetchDefaultCities();
   }, []);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
   return (
     <div className="min-h-screen bg-[url('/images/main.png')] bg-cover bg-no-repeat bg-center">
       <div className="w-full">
         <div className="flex flex-row align-center justify-center pt-5 mx-auto w-full">
-          <div className="mt-6 flex min-w-lg gap-x-4">
-            <input
-              id="search"
-              type="text"
-              name="search"
-              required
-              placeholder="Enter your city"
-              className="flex-auto rounded-xl bg-white px-3.5 py-2 text-base text-black outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
-            />
-            <button
-              type="submit"
-              className="flex-none rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-            >
-              Search
-            </button>
+          <div className="mt-6 flex items-center">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="flex flex-row align-item-center justify-content-center">
+                <input
+                  {...register("cityToSearch", { required: true })}
+                  className="w-70 flex-auto rounded-xl bg-white px-3.5 py-2 text-base text-black outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                />
+                <button
+                  type="submit"
+                  className="flex-none rounded-md bg-indigo-500 ms-5 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                >
+                  Search
+                </button>
+              </div>
+              {errors.cityToSearch && (
+                <span className="ms-2 text-red-500">City name is required</span>
+              )}
+            </form>
           </div>
         </div>
         <div className="flex flex-row justify-center items-center flex-wrap gap-5 min-h-[calc(100vh-200px)]">

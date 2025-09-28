@@ -40,7 +40,6 @@ function App() {
   useEffect(() => {
     const fetchDefaultCities = async () => {
       const result = await getMultipleCitiesData(myCities);
-      console.log("daadada:", result.data);
 
       if (result.success) {
         setDefaultCities(result.data!);

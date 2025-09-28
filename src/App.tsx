@@ -33,7 +33,6 @@ interface DefaultCity {
   weatherCode: number | null;
   timestamp: string | null;
 }
-const PUBLIC_URL = import.meta.env.VITE_PUBLIC_URL;
 
 function App() {
   const [defaultCities, setDefaultCities] = useState<Array<DefaultCity>>([]);

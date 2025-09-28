@@ -10,12 +10,12 @@ interface City {
 const myCities: Array<City> = [
   { name: "Paris", latitude: 48.8566, longitude: 2.3522 },
   { name: "London", latitude: 51.5074, longitude: -0.1278 },
-  // { name: "Budapest", latitude: 47.4979, longitude: 19.0402 },
-  // { name: "Moscow", latitude: 55.7558, longitude: 37.6176 },
-  // { name: "Oslo", latitude: 59.9139, longitude: 10.7522 },
-  // { name: "Copenhagen", latitude: 55.6761, longitude: 12.5683 },
-  // { name: "Vienna", latitude: 48.2082, longitude: 16.3738 },
-  // { name: "Barcelona", latitude: 41.3851, longitude: 2.1734 },
+  { name: "Budapest", latitude: 47.4979, longitude: 19.0402 },
+  { name: "Moscow", latitude: 55.7558, longitude: 37.6176 },
+  { name: "Oslo", latitude: 59.9139, longitude: 10.7522 },
+  { name: "Copenhagen", latitude: 55.6761, longitude: 12.5683 },
+  { name: "Vienna", latitude: 48.2082, longitude: 16.3738 },
+  { name: "Barcelona", latitude: 41.3851, longitude: 2.1734 },
   // { name: "Rome", latitude: 41.9028, longitude: 12.4964 },
 ];
 
@@ -33,6 +33,7 @@ interface DefaultCity {
   weatherCode: number | null;
   timestamp: string | null;
 }
+const PUBLIC_URL = import.meta.env.VITE_PUBLIC_URL;
 
 function App() {
   const [defaultCities, setDefaultCities] = useState<Array<DefaultCity>>([]);
@@ -50,8 +51,8 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen  bg-[url(./assets/images/main.png)] bg-cover bg-no-repeat bg-center">
-      <div className=" w-full">
+    <div className="min-h-screen bg-[url('/images/main.png')] bg-cover bg-no-repeat bg-center">
+      <div className="w-full">
         <div className="flex flex-row align-center justify-center pt-5 mx-auto w-full">
           <div className="mt-6 flex min-w-lg gap-x-4">
             <input
@@ -70,12 +71,7 @@ function App() {
             </button>
           </div>
         </div>
-        <div className="flex flex-row items-center justify-center mt-[35px]">
-          {/* <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm mx-4">
-            <h1 className="text-1xl font-bold text-red-600 text-center mb-4">
-              Weather App
-            </h1>
-          </div> */}
+        <div className="flex flex-row justify-center items-center flex-wrap gap-5 min-h-[calc(100vh-200px)]">
           {defaultCities.map((cityData, ind) => (
             <Card key={ind} data={cityData} />
           ))}

@@ -59,7 +59,9 @@ function App() {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+  };
 
   return (
     <div className="min-h-screen bg-[url('/images/main.png')] bg-cover bg-no-repeat bg-center">

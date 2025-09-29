@@ -28,8 +28,6 @@ const Card = ({ data }: { data: CityData }) => {
         const weatherCategory = getWeatherCategory(data.weatherCode!);
         const timeOfDay = data.isDay ? "day" : "night";
         const iconFileName = `${weatherCategory}-${timeOfDay}.svg`;
-        console.log("dfsd", iconFileName);
-
         const iconPath = `/images/wheather/${iconFileName}`;
 
         setIconSrc(iconPath);
@@ -39,8 +37,6 @@ const Card = ({ data }: { data: CityData }) => {
         setIconSrc("/images/wheather/clear-day.svg");
       }
     };
-
-    console.log(data.weatherCode);
 
     if (data.weatherCode) {
       loadWeatherIcon();

@@ -28,15 +28,19 @@ const Card = ({ data }: { data: CityData }) => {
         const weatherCategory = getWeatherCategory(data.weatherCode!);
         const timeOfDay = data.isDay ? "day" : "night";
         const iconFileName = `${weatherCategory}-${timeOfDay}.svg`;
+        console.log("dfsd", iconFileName);
+
         const iconPath = `/images/wheather/${iconFileName}`;
 
         setIconSrc(iconPath);
       } catch (error) {
         console.warn(`Could not load weather icon for ${data}:`, error);
         // Fallback to a default icon
-        setIconSrc('/images/wheather/clear-day.svg');
+        setIconSrc("/images/wheather/clear-day.svg");
       }
     };
+
+    console.log(data.weatherCode);
 
     if (data.weatherCode) {
       loadWeatherIcon();

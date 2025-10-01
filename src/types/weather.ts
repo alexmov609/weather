@@ -100,3 +100,8 @@ export interface FormattedWeatherData {
 export interface CityWeatherData extends FormattedWeatherData {
     city: string;
 }
+export interface WeatherCondition {
+    code: number;
+    description: string;
+    category: 'clear' | 'cloudy' | 'fog' | 'drizzle' | 'rain' | 'snow' | 'thunderstorm';
+}

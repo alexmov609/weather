@@ -1,10 +1,5 @@
-// weatherCodes.ts
+import type { WeatherCondition } from "../types/weather";
 
-export interface WeatherCondition {
-    code: number;
-    description: string;
-    category: 'clear' | 'cloudy' | 'fog' | 'drizzle' | 'rain' | 'snow' | 'thunderstorm';
-}
 
 export const WEATHER_CODES: Record<number, WeatherCondition> = {
     0: { code: 0, description: 'Clear sky', category: 'clear' },

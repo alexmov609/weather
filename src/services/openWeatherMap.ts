@@ -66,7 +66,7 @@ interface FormattedWeatherData {
     timestamp: string | null;
 }
 
-interface CityWeatherData extends FormattedWeatherData {
+export interface CityWeatherData extends FormattedWeatherData {
     city: string;
 }
 
@@ -99,7 +99,7 @@ export const getMultipleCitiesData = async (cities: City[]) => {
         };
         const response = await axios.get<WeatherResponse[]>(API_BASE_URL, { params });
 
-        if (!response.data || !Array.isArray(response.data)) {
+        if (!response.data) {
             throw new Error('Invalid API response structure');
         }
 
@@ -128,17 +128,48 @@ export const getMultipleCitiesData = async (cities: City[]) => {
  * @param city 
  * @returns 
  */
-export const getNewCityData = async (city: Array<City>) => {
-    const result = await getMultipleCitiesData(city);
+export const getNewCityData = async (city: City) => {
+    try {
+        const params = {
+            latitude: city.latitude,
+            longitude: city.longitude,
+            current: [
+                'temperature_2m',
+                'relative_humidity_2m',
+                'apparent_temperature',
+                'is_day',
+                'precipitation',
+                'weather_code',
+                'cloud_cover',
+                'pressure_msl',
+                'wind_speed_10m',
+                'wind_direction_10m'
+            ].join(','),
+            timezone: 'auto'
+        };
+        const response = await axios.get<WeatherResponse>(API_BASE_URL, { params });
+        if (!response.data) {
+            throw new Error('Invalid API response structure');
+        }
 
-    if (result.success) {
+        // Create correct city object
+        const newCities: CityWeatherData = {
+            city: city.name,
+            ...formatWeatherData(response.data!) // Pass the specific weather object
+        };
+
         return {
             success: true,
-            data: result.data
+            data: newCities
+        };
+
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred when fetching data';
+        return {
+            success: false,
+            error: errorMessage
         };
     }
-
-    return result;
 }
 
 

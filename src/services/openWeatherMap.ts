@@ -1,74 +1,11 @@
 
 import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_WEATHER_API_BASE_URL
+import type { City, CityWeatherData, FormattedWeatherData, WeatherResponse } from "../types/weather";
 
 
-interface City {
-    name: string;
-    latitude: number;
-    longitude: number;
-}
 
-interface WeatherUnits {
-    time: string;
-    interval: string;
-    temperature_2m: string;
-    relative_humidity_2m: string;
-    apparent_temperature: string;
-    is_day: string;
-    precipitation: string;
-    weather_code: string;
-    cloud_cover: string;
-    pressure_msl: string;
-    wind_speed_10m: string;
-    wind_direction_10m: string;
-}
 
-interface CurrentWeather {
-    time: string;
-    interval: number;
-    temperature_2m: number;
-    relative_humidity_2m: number;
-    apparent_temperature: number;
-    is_day: number;
-    precipitation: number;
-    weather_code: number;
-    cloud_cover: number;
-    pressure_msl: number;
-    wind_speed_10m: number;
-    wind_direction_10m: number;
-}
-
-interface WeatherResponse {
-    latitude: number;
-    longitude: number;
-    generationtime_ms: number;
-    utc_offset_seconds: number;
-    timezone: string;
-    timezone_abbreviation: string;
-    elevation: number;
-    location_id?: number;
-    current_units: WeatherUnits;
-    current: CurrentWeather;
-}
-
-interface FormattedWeatherData {
-    temperature: number | null;
-    feelsLike: number | null;
-    humidity: number | null;
-    precipitation: number | null;
-    windSpeed: number | null;
-    windDirection: number | null;
-    pressure: number | null;
-    cloudCover: number | null;
-    isDay: boolean;
-    weatherCode: number | null;
-    timestamp: string | null;
-}
-
-export interface CityWeatherData extends FormattedWeatherData {
-    city: string;
-}
 
 /**
  * Fetch current weather data from open-meteo API 

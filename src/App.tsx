@@ -7,28 +7,14 @@ import {
 import { useForm, type SubmitHandler } from "react-hook-form";
 import citiesData from "cities.json";
 import { type CityWeatherData } from "./services/openWeatherMap";
+import type {
+  City,
+  CityData,
+  JsonCityData,
+  MeteoResponseDefaultCity,
+  Inputs,
+} from "./types/weather";
 
-//Default cities
-interface City {
-  name: string;
-  latitude: number;
-  longitude: number;
-}
-
-//Search select city data
-interface CityData extends City {
-  country: string;
-}
-
-//Json cities interface
-interface JsonCityData {
-  name: string;
-  lng: string;
-  lat: string;
-  country: string;
-  admin1: string;
-  admin2: string;
-}
 const myCities: Array<City> = [
   { name: "Paris", latitude: 48.8566, longitude: 2.3522 },
   { name: "London", latitude: 51.5074, longitude: -0.1278 },
@@ -40,26 +26,6 @@ const myCities: Array<City> = [
   { name: "Barcelona", latitude: 41.3851, longitude: 2.1734 },
   { name: "Rome", latitude: 41.9028, longitude: 12.4964 },
 ];
-
-//Response from meteo Api
-interface MeteoResponseDefaultCity {
-  city: string;
-  temperature: number | null;
-  feelsLike: number | null;
-  humidity: number | null;
-  precipitation: number | null;
-  windSpeed: number | null;
-  windDirection: number | null;
-  pressure: number | null;
-  cloudCover: number | null;
-  isDay: boolean;
-  weatherCode: number | null;
-  timestamp: string | null;
-}
-
-type Inputs = {
-  cityToSearch: string;
-};
 
 function App() {
   const [defaultCities, setDefaultCities] = useState<

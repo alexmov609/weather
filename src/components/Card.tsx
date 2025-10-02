@@ -4,6 +4,7 @@ import {
   getWeatherCategory,
   isValidWeatherCode,
 } from "../data/wheatherCodes";
+import { Info, Trash2 } from "lucide-react";
 interface CityData {
   city: string;
   temperature: number | null;
@@ -19,8 +20,26 @@ interface CityData {
   timestamp: string | null;
 }
 
-const Card = ({ data }: { data: CityData }) => {
+const Card = ({
+  data,
+  removeCity,
+}: {
+  data: CityData;
+  removeCity: (name: string) => void;
+}) => {
   const [iconSrc, setIconSrc] = useState<string>("");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const loadWeatherIcon = () => {
@@ -47,16 +66,28 @@ const Card = ({ data }: { data: CityData }) => {
     <div
       className={`duration-300 font-mono text-white group cursor-pointer relative overflow-hidden ${
         data.isDay ? "bg-[#7f8080]" : "bg-[#22272B]"
-      } w-38 h-48 rounded-3xl p-4 hover:w-56 hover:bg-blue-200 hover:dark:bg-[#0C66E4]`}
+      } ${isMobile ? 'w-56' : 'w-56 sm:w-38'} h-48 rounded-3xl p-4 hover:w-56 hover:bg-blue-200 hover:dark:bg-[#0C66E4]`}
     >
+      <button
+        onClick={() => console.log("j")}
+        className={`absolute top-3 left-3 p-2 rounded-lg ${isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} hover:cursor-pointer transition-opacity duration-200`}
+      >
+        <Info size={16} />
+      </button>
       <h3 className="text-xl text-center">{data.city}</h3>
+      <button
+        onClick={() => removeCity(data.city)}
+        className={`absolute top-3 right-3 p-2 rounded-lg ${isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} hover:cursor-pointer transition-opacity duration-200`}
+      >
+        <Trash2 size={16} />
+      </button>
       <div className="gap-4 relative">
         {iconSrc && <img src={iconSrc} className="w-25" alt="weather icon" />}
-        <h4 className="font-sans duration-300 absolute left-1/2 -translate-x-1/2 text-5xl text-center group-hover:translate-x-4 group-hover:-translate-y-20 group-hover:scale-110">
+        <h4 className={`font-sans duration-300 absolute left-1/2 -translate-x-1/2 text-5xl text-center ${isMobile ? 'translate-x-4 -translate-y-20 scale-110' : 'group-hover:translate-x-4 group-hover:-translate-y-20 group-hover:scale-110'}`}>
           {Math.round(data.temperature ?? 0)}°
         </h4>
       </div>
-      <div className="absolute duration-300 -left-32 mt-2 group-hover:left-10">
+      <div className={`absolute duration-300 mt-2 ${isMobile ? 'left-10' : '-left-32 group-hover:left-10'}`}>
         <p className="text-sm">
           {isValidWeatherCode(data.weatherCode!)
             ? getWeatherDescription(data.weatherCode!)

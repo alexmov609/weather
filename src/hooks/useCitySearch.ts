@@ -70,8 +70,6 @@ export const useCitySearch = () => {
       longitude: city.longitude,
     });
 
-    console.log("city to searchObject11", result.data!);
-
     if (result.success && result.data!) {
       setCityToSearchObject(result.data!);
     }

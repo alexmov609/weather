@@ -22,11 +22,16 @@ export const useWeatherData = (initialCities: City[]) => {
 
   // Add a new city to weather data
   const addCity = (cityData: MeteoResponseDefaultCity) => {
-    setWeatherData((prev) => [...prev, cityData]);
+    setWeatherData((prev) => [cityData, ...prev]);
   };
+
+  const removeCity = (cityName: string) => {
+    setWeatherData((prev) => prev.filter(city => city.city !== cityName))
+  }
 
   return {
     weatherData,
     addCity,
+    removeCity,
   };
 };

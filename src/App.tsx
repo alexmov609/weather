@@ -4,7 +4,7 @@ import CitySearchForm from "./components/CitySearchForm";
 import { myCities } from "./data/defaultCities";
 
 function App() {
-  const { weatherData, addCity } = useWeatherData(myCities);
+  const { weatherData, addCity, removeCity } = useWeatherData(myCities);
 
   return (
     <div className="min-h-screen bg-[url('/images/main.png')] bg-cover bg-no-repeat bg-center">
@@ -14,9 +14,9 @@ function App() {
             <CitySearchForm addCity={addCity} />
           </div>
         </div>
-        <div className="flex flex-row justify-center items-center flex-wrap gap-5 min-h-[calc(100vh-200px)]">
+        <div className="mt-5 flex flex-row justify-center items-center flex-wrap gap-5 min-h-[calc(100vh-200px)]">
           {weatherData.map((cityData, ind) => (
-            <Card key={ind} data={cityData} />
+            <Card key={ind} data={cityData} removeCity={removeCity} />
           ))}
         </div>
       </div>

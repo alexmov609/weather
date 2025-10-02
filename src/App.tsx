@@ -27,28 +27,56 @@ function App() {
   } else rows.push(weatherData);
 
   return (
-    <div className="min-h-screen bg-[url('/images/main.png')] bg-cover bg-no-repeat bg-center">
-      <div className="w-full">
+    <div className="min-h-screen relative">
+      <div className="absolute inset-0 bg-[url('/images/main.png')] bg-cover bg-no-repeat bg-center blur-sm -z-10"></div>
+      <div className="w-full relative">
         <div className="flex flex-row align-center justify-center pt-5 mx-auto w-full">
           <div className="mt-6 flex items-center relative">
             <CitySearchForm addCity={addCity} />
           </div>
         </div>
         <div className="mt-5 flex flex-col justify-center items-center gap-5 min-h-[calc(100vh-200px)]">
-          {rows.map((row, rowIndex) => (
-            <div
-              key={rowIndex}
-              className="flex flex-row justify-center items-center flex-wrap gap-5"
-            >
-              {row.map((cityData, ind) => (
-                <Card
-                  key={rowIndex * cardsPerRow + ind}
-                  data={cityData}
-                  removeCity={removeCity}
-                />
-              ))}
+          {weatherData.length > 0 ? (
+            rows.map((row, rowIndex) => (
+              <div
+                key={rowIndex}
+                className="flex flex-row justify-center items-center flex-wrap gap-5"
+              >
+                {row.map((cityData, ind) => (
+                  <Card
+                    key={rowIndex * cardsPerRow + ind}
+                    data={cityData}
+                    removeCity={removeCity}
+                  />
+                ))}
+              </div>
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center gap-6 mt-20">
+              <div className="relative">
+                <div className="absolute inset-0 bg-blue-500/20 blur-3xl rounded-full"></div>
+                <svg
+                  className="w-32 h-32 text-black/80 relative animate-pulse"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <p className="text-black/90 text-xl font-light tracking-wide">
+                Start exploring the weather
+              </p>
+              <p className="text-black/60 text-sm">
+                Search for a city above to get started
+              </p>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>

@@ -57,7 +57,7 @@ const Card = ({
       }
     };
 
-    if (data.weatherCode) {
+    if (data.weatherCode !== null && data.weatherCode !== undefined) {
       loadWeatherIcon();
     }
   }, [data]);

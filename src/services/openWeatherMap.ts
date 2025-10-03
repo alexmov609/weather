@@ -49,7 +49,7 @@ export const getMultipleCitiesData = async (cities: City[]) => {
             city: city.name,
             ...formatWeatherData(response.data[index]) // Pass the specific weather object
         }));
-        console.log("reee", newCities);
+
         return {
             success: true,
             data: newCities

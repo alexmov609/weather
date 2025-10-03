@@ -34,6 +34,7 @@ export interface MeteoResponseDefaultCity {
     isDay: boolean;
     weatherCode: number | null;
     timestamp: string | null;
+    daily: DailyFormatted[];
 }
 
 export type Inputs = {

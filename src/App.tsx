@@ -78,6 +78,26 @@ function App() {
             </div>
           )}
         </div>
+
+        {/* Footer */}
+        <footer className="relative mt-10 py-6 border-t border-white/10">
+          <div className="max-w-7xl mx-auto px-4 text-center">
+            <p className="text-black/70 text-sm">
+              © {new Date().getFullYear()} All rights reserved by{" "}
+              <a
+                href="https://github.com/alexmov609/weather"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-black/90 hover:text-blue-600 font-semibold transition-colors underline"
+              >
+                Alex Movchan
+              </a>
+            </p>
+            <p className="text-black/50 text-xs mt-2">
+              Built with React & TypeScript
+            </p>
+          </div>
+        </footer>
       </div>
     </div>
   );

@@ -5,6 +5,8 @@ import {
   isValidWeatherCode,
 } from "../data/wheatherCodes";
 import {
+  ChevronDown,
+  ChevronUp,
   CircleGauge,
   Cloud,
   CloudRain,
@@ -15,6 +17,8 @@ import {
   Wind,
   X,
 } from "lucide-react";
+import type { DailyFormatted } from "../types/weather";
+import { weekDays } from "../data/common";
 interface CityData {
   city: string;
   temperature: number | null;
@@ -28,6 +32,7 @@ interface CityData {
   isDay: boolean;
   weatherCode: number | null;
   timestamp: string | null;
+  daily: DailyFormatted[];
 }
 
 const Card = ({
@@ -88,6 +93,7 @@ const Card = ({
     const index = Math.round(normalized / 45) % 8;
     return directions[index];
   }
+
   return (
     <>
       <div
@@ -143,7 +149,137 @@ const Card = ({
       {/* Full-Page Info Modal */}
       {showInfo && (
         <div className="fixed inset-0 bg-gradient-to-br from-blue-500 to-blue-800 z-50 overflow-auto">
-          <div className="min-h-screen w-full p-8">
+          {/* Animated Weather Particles */}
+          {data.weatherCode !== null && (
+            <>
+              {/* Rain particles */}
+              {(getWeatherCategory(data.weatherCode) === "rain" ||
+                getWeatherCategory(data.weatherCode) === "drizzle") && (
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                  {[...Array(50)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-0.5 bg-white/30"
+                      style={{
+                        left: `${Math.random() * 100}%`,
+                        top: `-${Math.random() * 20}%`,
+                        height: `${Math.random() * 30 + 20}px`,
+                        animation: `fall ${
+                          Math.random() * 0.5 + 0.5
+                        }s linear infinite`,
+                        animationDelay: `${Math.random() * 2}s`,
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Snow particles */}
+              {getWeatherCategory(data.weatherCode) === "snow" && (
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                  {[...Array(50)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-2 h-2 bg-white rounded-full opacity-80"
+                      style={{
+                        left: `${Math.random() * 100}%`,
+                        top: `-${Math.random() * 20}%`,
+                        animation: `snowfall ${
+                          Math.random() * 3 + 2
+                        }s linear infinite`,
+                        animationDelay: `${Math.random() * 2}s`,
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Cloud particles */}
+              {getWeatherCategory(data.weatherCode) === "cloudy" && (
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                  {[...Array(5)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-32 h-16 bg-white/10 rounded-full blur-xl"
+                      style={{
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 50}%`,
+                        animation: `float ${
+                          Math.random() * 10 + 15
+                        }s linear infinite`,
+                        animationDelay: `${Math.random() * 5}s`,
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Thunderstorm particles */}
+              {getWeatherCategory(data.weatherCode) === "thunderstorm" && (
+                <>
+                  <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                    {[...Array(30)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="absolute w-0.5 bg-white/40"
+                        style={{
+                          left: `${Math.random() * 100}%`,
+                          top: `-${Math.random() * 20}%`,
+                          height: `${Math.random() * 40 + 30}px`,
+                          animation: `fall ${
+                            Math.random() * 0.3 + 0.3
+                          }s linear infinite`,
+                          animationDelay: `${Math.random() * 2}s`,
+                        }}
+                      />
+                    ))}
+                  </div>
+                  <div className="absolute inset-0 pointer-events-none">
+                    <div
+                      className="absolute inset-0 bg-white/20"
+                      style={{
+                        animation: "lightning 5s infinite",
+                      }}
+                    />
+                  </div>
+                </>
+              )}
+            </>
+          )}
+
+          <style>{`
+            @keyframes fall {
+              to {
+                transform: translateY(100vh);
+              }
+            }
+            @keyframes snowfall {
+              to {
+                transform: translateY(100vh) translateX(50px);
+              }
+            }
+            @keyframes float {
+              0%, 100% {
+                transform: translateX(0);
+              }
+              50% {
+                transform: translateX(100px);
+              }
+            }
+            @keyframes lightning {
+              0%, 100% {
+                opacity: 0;
+              }
+              45%, 55% {
+                opacity: 0;
+              }
+              49%, 51% {
+                opacity: 1;
+              }
+            }
+          `}</style>
+
+          <div className="min-h-screen w-full p-8 relative z-10">
             <button
               onClick={() => setShowInfo(false)}
               className="fixed top-1 right-6 p-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full transition-colors hover:cursor-pointer"
@@ -151,7 +287,7 @@ const Card = ({
               <X size={12} className="text-white" />
             </button>
             <div className="w-full mx-auto">
-              <div className="flex flex-row justify-between mb-13">
+              <div className="flex flex-row justify-between mb-5">
                 <div className="text-6xl font-bold text-white mb-4">
                   {data.city}
                 </div>
@@ -160,8 +296,8 @@ const Card = ({
                   {Math.round(data.temperature ?? 0)}°C
                 </div>
               </div>
-              <div className="font-semibold text-4xl text-white/90 mb-5">
-                Monday
+              <div className="font-semibold text-4xl text-white/90 mb-6">
+                {weekDays[new Date(data.daily[0].date).getDay()]}
               </div>
               <div className="flex flex-row justify-between">
                 <div>
@@ -191,6 +327,15 @@ const Card = ({
                   </div>
                 </div>
                 <div>
+                  <img
+                    src={`/images/dailyWeather/${getWeatherCategory(
+                      data.daily[0].weather
+                    )}.png`}
+                    alt={"clear"}
+                    className="w-36 h-36 mx-auto mb-3"
+                  />
+                </div>
+                <div>
                   <div></div>
                   <div className="text-2xl text-white/90 flex flex-row items-center mb-5 group/tooltip relative">
                     <Thermometer className="cursor-help" />
@@ -216,14 +361,59 @@ const Card = ({
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-7 gap-6 mt-40">
-                <div className="bg-white/20 text-white/70  backdrop-blur-md rounded-6xl p-6 rounded-xl text-center">
-                  <h3 className=" text-3xl font-light uppercase tracking-wider mb-2">
-                    SUN
-                  </h3>
-                  <p className="text-2xl ">
-                    {Math.round(data.temperature ?? 0)}°C
-                  </p>
+              <div className="mt-5">
+                <h3 className="text-3xl font-semibold text-white mb-3">
+                  7-Day Forecast
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4">
+                  {data.daily.map((dailyData, index) => {
+                    const weatherCategory = getWeatherCategory(
+                      dailyData.weather
+                    );
+                    const iconPath = `/images/wheather/${weatherCategory}-day.svg`;
+
+                    return (
+                      <div
+                        key={index}
+                        className="bg-white/15 hover:bg-white/25 backdrop-blur-md rounded-2xl p-5 text-center transition-all duration-300 hover:scale-105 border border-white/20"
+                      >
+                        <h4 className="text-white text-lg font-semibold mb-3">
+                          {weekDays[new Date(dailyData.date).getDay()]}
+                        </h4>
+
+                        <img
+                          src={iconPath}
+                          alt={getWeatherDescription(dailyData.weather)}
+                          className="w-16 h-16 mx-auto mb-3"
+                        />
+
+                        <div className="space-y-2 mb-3">
+                          <div className="flex items-center justify-center gap-2 text-white">
+                            <ChevronUp size={18} className="text-red-300" />
+                            <span className="text-xl font-bold">
+                              {Math.round(dailyData.maxTemperature)}°
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-center gap-2 text-white/80">
+                            <ChevronDown size={18} className="text-blue-300" />
+                            <span className="text-lg">
+                              {Math.round(dailyData.minTemperature)}°
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="border-t border-white/20 pt-3 space-y-2">
+                          <div className="flex items-center justify-center gap-2 text-white/70 text-sm">
+                            <Wind size={14} />
+                            <span>{Math.round(dailyData.windSpeed)} km/h</span>
+                          </div>
+                          <p className="text-white/60 text-xs leading-tight">
+                            {getWeatherDescription(dailyData.weather)}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>

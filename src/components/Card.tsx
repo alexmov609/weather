@@ -327,15 +327,6 @@ const Card = ({
                   </div>
                 </div>
                 <div>
-                  <img
-                    src={`/images/dailyWeather/${getWeatherCategory(
-                      data.daily[0].weather
-                    )}.png`}
-                    alt={"clear"}
-                    className="w-36 h-36 mx-auto mb-3"
-                  />
-                </div>
-                <div>
                   <div></div>
                   <div className="text-2xl text-white/90 flex flex-row items-center mb-5 group/tooltip relative">
                     <Thermometer className="cursor-help" />

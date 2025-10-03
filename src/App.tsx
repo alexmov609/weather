@@ -85,7 +85,7 @@ function App() {
             <p className="text-black text-sm">
               © {new Date().getFullYear()} All rights reserved by{" "}
               <a
-                href="https://github.com/alexmovchan"
+                href="https://github.com/alexmov609/weather"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-black hover:text-blue-600 font-semibold transition-colors underline"

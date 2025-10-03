@@ -70,6 +70,15 @@ interface CurrentWeather {
     wind_direction_10m: number;
 }
 
+export interface DailyResponse {
+    precipitation_sum: number[],
+    temperature_2m_max: number[]
+    temperature_2m_min: number[],
+    time: string[],
+    weather_code: number[],
+    wind_speed_10m_max: number[]
+}
+
 export interface WeatherResponse {
     latitude: number;
     longitude: number;
@@ -81,8 +90,16 @@ export interface WeatherResponse {
     location_id?: number;
     current_units: WeatherUnits;
     current: CurrentWeather;
+    daily: DailyResponse
 }
 
+export interface DailyFormatted {
+    date: string,
+    minTemperature: number,
+    maxTemperature: number,
+    weather: number,
+    windSpeed: number,
+}
 export interface FormattedWeatherData {
     temperature: number | null;
     feelsLike: number | null;
@@ -95,6 +112,7 @@ export interface FormattedWeatherData {
     isDay: boolean;
     weatherCode: number | null;
     timestamp: string | null;
+    daily: DailyFormatted[]
 }
 
 export interface CityWeatherData extends FormattedWeatherData {

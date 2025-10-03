@@ -1,10 +1,7 @@
 
 import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_WEATHER_API_BASE_URL
-import type { City, CityWeatherData, FormattedWeatherData, WeatherResponse } from "../types/weather";
-
-
-
+import type { City, CityWeatherData, DailyResponse, FormattedWeatherData, WeatherResponse } from "../types/weather";
 
 
 /**
@@ -20,6 +17,7 @@ export const getMultipleCitiesData = async (cities: City[]) => {
         const params = {
             latitude: lats,
             longitude: lons,
+            forecast_days: 7,
             current: [
                 'temperature_2m',
                 'relative_humidity_2m',
@@ -32,10 +30,16 @@ export const getMultipleCitiesData = async (cities: City[]) => {
                 'wind_speed_10m',
                 'wind_direction_10m'
             ].join(','),
+            daily: [
+                'temperature_2m_max',
+                'temperature_2m_min',
+                'weather_code',
+                'precipitation_sum',
+                'wind_speed_10m_max'
+            ].join(','),
             timezone: 'auto'
         };
         const response = await axios.get<WeatherResponse[]>(API_BASE_URL, { params });
-
         if (!response.data) {
             throw new Error('Invalid API response structure');
         }
@@ -45,7 +49,7 @@ export const getMultipleCitiesData = async (cities: City[]) => {
             city: city.name,
             ...formatWeatherData(response.data[index]) // Pass the specific weather object
         }));
-
+        console.log("reee", newCities);
         return {
             success: true,
             data: newCities
@@ -82,6 +86,13 @@ export const getNewCityData = async (city: City) => {
                 'wind_speed_10m',
                 'wind_direction_10m'
             ].join(','),
+            daily: [
+                'temperature_2m_max',
+                'temperature_2m_min',
+                'weather_code',
+                'precipitation_sum',
+                'wind_speed_10m_max'
+            ].join(','),
             timezone: 'auto'
         };
         const response = await axios.get<WeatherResponse>(API_BASE_URL, { params });
@@ -94,6 +105,8 @@ export const getNewCityData = async (city: City) => {
             city: city.name,
             ...formatWeatherData(response.data!) // Pass the specific weather object
         };
+
+
 
         return {
             success: true,
@@ -127,6 +140,21 @@ const formatWeatherData = (weatherData: WeatherResponse, index = 0): FormattedWe
         return Array.isArray(value) ? value[index] : value;
     };
 
+    const dailyData = (data: DailyResponse) => {
+        const formattedData = []
+        for (let i = 0; i < data.time.length; i++) {
+            formattedData.push({
+                'date': data.time[i],
+                'minTemperature': data.temperature_2m_min[i],
+                'maxTemperature': data.temperature_2m_max[i],
+                'weather': data.weather_code[i],
+                'windSpeed': data.wind_speed_10m_max[i],
+            })
+        }
+
+        return formattedData;
+    }
+
     return {
         temperature: getValue(current.temperature_2m),
         feelsLike: getValue(current.apparent_temperature),
@@ -138,6 +166,7 @@ const formatWeatherData = (weatherData: WeatherResponse, index = 0): FormattedWe
         cloudCover: getValue(current.cloud_cover),
         isDay: getValue(current.is_day) === 1,
         weatherCode: getValue(current.weather_code),
-        timestamp: getValue(current.time)
+        timestamp: getValue(current.time),
+        daily: dailyData(weatherData.daily)
     }
 };

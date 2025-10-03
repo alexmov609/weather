@@ -29,12 +29,6 @@ export const useWeatherData = (initialCities: City[]) => {
     setWeatherData((prev) => prev.filter(city => city.city !== cityName))
   }
 
-  const cityInfo = (cityName: string) => {
-
-
-  }
-
-
   return {
     weatherData,
     addCity,

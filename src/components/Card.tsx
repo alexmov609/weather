@@ -287,7 +287,7 @@ const Card = ({
               <X size={12} className="text-white" />
             </button>
             <div className="w-full mx-auto">
-              <div className="flex flex-row justify-between mb-5">
+              <div className="flex flex-col sm:flex-row items-center justify-between mb-5">
                 <div className="text-6xl font-bold text-white mb-4">
                   {data.city}
                 </div>

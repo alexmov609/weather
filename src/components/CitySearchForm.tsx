@@ -55,7 +55,7 @@ const CitySearchForm = ({ addCity }: CitySearchFormProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-row align-item-center justify-content-center relative">
+      <div className="flex flex-col items-center sm:flex-row align-item-center justify-content-center relative">
         <div className="relative" ref={searchContainerRef}>
           <input
             value={cityToSearch}
@@ -82,7 +82,7 @@ const CitySearchForm = ({ addCity }: CitySearchFormProps) => {
         </div>
         <button
           type="submit"
-          className="flex-none rounded-md bg-indigo-500 ms-5 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+          className="flex-none mt-3 sm:mt-0 rounded-md bg-indigo-500 ms-5 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
         >
           Search
         </button>

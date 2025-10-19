@@ -97,6 +97,7 @@ const Card = ({
   return (
     <>
       <div
+        onClick={() => setShowInfo(true)}
         className={`duration-300 font-mono text-white group cursor-pointer relative overflow-hidden ${
           data.isDay ? "bg-[#7f8080]" : "bg-[#22272B]"
         } ${
